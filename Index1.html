@@ -19,7 +19,7 @@
     <body >
       
         <div class="container-md"> 
-          <div class="crediti crediti-hover show"><h6> Programmato da: <br>Marco Tedesco (4ªA AFM) </h6></div>
+          <div class="crediti crediti-hover show"><h6> Programmato da: <br>Marco Tedesco (4ªA AFM) <br> & Prof. Gaetano Ferrarelli </h6></div>
 
 
            
@@ -42,11 +42,13 @@
                   <!-- Progress Bar -->
                   <div class="progress-bar" id="progressBar">
                     <div class="progress" id="progress"></div>
+                    <div class="progress-thumb" id="progressThumb"></div>
                   </div>
                   <!-- Current Time / Duration -->
                   <span class="time" id="timeDisplay">0:00 / 0:00</span>
                   <!-- Volume -->
                   <button class="volume" id="volumeBtn">🔊</button>
+                  
                   <!-- Fullscreen -->
                   <button class="fullscreen" id="fullscreenBtn">⛶</button>
                 </div>
@@ -218,11 +220,93 @@
       
   });
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const videoPlayer = document.querySelector(".video-player");
+      const controls = document.querySelector(".controls");
+      let hideControlsTimeout;
+
+      function showControls() {
+          controls.style.opacity = "1";
+          controls.style.visibility = "visible";
+          clearTimeout(hideControlsTimeout); // Reset timer
+      }
+
+      function hideControls() {
+          hideControlsTimeout = setTimeout(() => {
+              controls.style.opacity = "0";
+              setTimeout(() => {
+                  controls.style.visibility = "hidden"; // Nasconde dopo l'animazione
+              }, 500); // Aspetta la transizione (0.5s)
+          }, 3000); // Dopo 3 secondi di inattività
+      }
+
+      videoPlayer.addEventListener("mouseenter", showControls);
+      videoPlayer.addEventListener("mousemove", showControls);
+      videoPlayer.addEventListener("mouseleave", hideControls);
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+      const video = document.getElementById("video");
+      const progressBar = document.getElementById("progressBar");
+      const progress = document.getElementById("progress");
+      const progressThumb = document.getElementById("progressThumb");
+  
+      let isDragging = false;
+  
+      // **Funzione per aggiornare la barra e la pallina**
+      function updateProgress() {
+          const progressPercent = (video.currentTime / video.duration) * 100;
+          progress.style.width = `${progressPercent}%`;
+          progressThumb.style.left = `${progressPercent}%`;
+      }
+  
+      // **Funzione per aggiornare il tempo del video manualmente**
+      function setVideoProgress(event) {
+          const rect = progressBar.getBoundingClientRect();
+          let offsetX = event.clientX - rect.left;
+          offsetX = Math.max(0, Math.min(offsetX, rect.width)); // Limiti tra 0 e max
+          const newTime = (offsetX / rect.width) * video.duration;
+          video.currentTime = newTime;
+          updateProgress();
+      }
+  
+      // **Clic sulla barra per cambiare il tempo**
+      progressBar.addEventListener("click", setVideoProgress);
+  
+      // **Drag Start: inizia trascinamento**
+      progressThumb.addEventListener("mousedown", (event) => {
+          isDragging = true;
+          document.body.style.userSelect = "none"; // Evita selezione testo
+      });
+  
+      // **Drag Move: muovere la pallina mentre si trascina**
+      document.addEventListener("mousemove", (event) => {
+          if (isDragging) {
+              setVideoProgress(event);
+          }
+      });
+  
+      // **Drag End: rilascia il trascinamento**
+      document.addEventListener("mouseup", () => {
+          isDragging = false;
+          document.body.style.userSelect = "auto"; // Ripristina selezione testo
+      });
+  
+      // **Aggiornare la barra in tempo reale mentre il video avanza**
+      video.addEventListener("timeupdate", updateProgress);
+  });
+  </script>
+  
+
   
   
 
     </body>
 </html>
 
- <!--programmed by Prof. Ferrarelli Gaetano & Marco Tedesco, for info -->
+ <!--programmed by Marco Tedesco, for info "Marco.Tedesco758@gmail.com"-->
 
