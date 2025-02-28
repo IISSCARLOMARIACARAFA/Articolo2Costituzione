@@ -19,9 +19,20 @@
     <body onbeforeunload="window.scrollTo(0,0)">
       
 
-      <div id="intro"><h1>Questo progetto è stato realizzato dalla <br>4ªA , 5ªA & 5ªB AFM/SIA dell'Istituto Carlo Maria Carafa <p> </p> Con la Supervisione dei Professori <br> Gaetano Ferrarelli (Informatica) e <br> Alfonsina Ginevra (Diritto & Economia Politica)</h1></div>
+      <div id="intro"><h1>Questo progetto è stato realizzato dalla <br>4ªA , 5ªA & 5ªB AFM/SIA dell'Istituto Carlo Maria Carafa <p> </p> Con la Supervisione dei Professori <br> Alfonsina Ginevra (Diritto & Economia Politica) <br> e Gaetano Ferrarelli (Informatica)
+      
+        <div id="countdownDiv">
+          Visibile fra&nbsp;<span id="timer"> 7 </span>&nbsp;secondi.
+        </div>
+
+      </h1>
+        
+        
+
+      </div>
+      
         <div class="container-md"> 
-          <div class="crediti crediti-hover show"><h6> Programmato da: <br>Marco Tedesco (4ªA AFM) <br> & Prof. Gaetano Ferrarelli  </h6></div>
+          <div class="crediti crediti-hover show"><h6> Programmato da: <br>Marco Tedesco (4ªA AFM) <br>& Prof. Gaetano Ferrarelli</h6></div>
 
 
            
@@ -31,11 +42,14 @@
     </span>
   </div>
 
-              
+  
               
               <div class="video-player">
+
                 <!-- Video -->
-                <video  id="video"  src="immagini/Ultime notizie rosse.mp4">
+                 
+
+                <video  id="video"  src="immagini/Ultime notizie rosse.mp4"  >
                   
                 </video>
               
@@ -149,7 +163,7 @@
             intro.classList.add("hidden");
             document.body.classList.remove("no-scroll"); // Riabilita lo scroll
             console.log("Intro nascosto.");
-        }, 5000);
+        }, 7000);
     } else {
         console.error("Elemento #intro non trovato!");
     }
@@ -330,6 +344,56 @@
   });
 
   </script>
+
+<script>
+  let seconds = 7; // Tempo in secondi prima della scomparsa
+  let timerSpan = document.getElementById("timer");
+  let countdownDiv = document.getElementById("countdownDiv");
+
+  let countdown = setInterval(function() {
+      seconds--; 
+      timerSpan.textContent = seconds; 
+
+      if (seconds <= 0) {
+          clearInterval(countdown); 
+          countdownDiv.style.display = "none"; 
+      }
+  }, 1000);
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const video = document.getElementById("video");
+      const loadingSpinner = document.getElementById("loadingSpinner");
+  
+      // Nasconde lo spinner se il video è già caricato
+      if (video.readyState >= 3) { // READY_STATE 3 significa che il video può essere riprodotto
+          loadingSpinner.style.display = "none";
+      }
+  
+      // Mostra lo spinner quando il video sta caricando
+      video.addEventListener("waiting", function () {
+          loadingSpinner.style.display = "block";
+      });
+  
+      // Nasconde lo spinner quando il video è pronto a partire
+      video.addEventListener("canplay", function () {
+          loadingSpinner.style.display = "none";
+      });
+  
+      // Nasconde lo spinner quando il video parte
+      video.addEventListener("play", function () {
+          loadingSpinner.style.display = "none";
+      });
+  
+      // Se il video è già pronto all'inizio, nasconde lo spinner
+      video.addEventListener("loadeddata", function () {
+          loadingSpinner.style.display = "none";
+      });
+  });
+  </script>
+
+
 
 
 
