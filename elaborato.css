@@ -264,8 +264,10 @@ iframe{
 
 .carousel-control-next, .carousel-control-prev{
   opacity: 1 !important;
+
 }
 
 .carousel-indicators [data-bs-target]{
   background-color: black !important;
+
 }
