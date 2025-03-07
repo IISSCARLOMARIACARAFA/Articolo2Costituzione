@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Affluenza Voto per Regione e Titolo di Studio (2000-2025)</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+        .container {
+            
+            max-width: 750px;
+            height: 100%;
+            
+            aspect-ratio: 16/9;
+        }
+
+        h2{
+            margin-top: 0px;
+        }
+        h3{
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Affluenza al Voto per Regione e Titolo di Studio in Italia (2000-2025)</h2>
+        <h3 id="anno-label">Anno: 2000</h3>
+        <div id="grafico"></div>
+        <button id="play">Play</button>
+        <button id="pause">Pause</button>
+    </div>
+    
+    <script>
+        var anni = [...Array(26).keys()].map(i => 2000 + i);
+        var regioni = ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"];
+        
+        function generaDati() {
+            return regioni.map(regione => {
+                return {
+                    regione: regione,
+                    licenza_media: Array.from({ length: 26 }, () => Math.random() * 20 + 10),
+                    diploma: Array.from({ length: 26 }, () => Math.random() * 20 + 20),
+                    laurea: Array.from({ length: 26 }, () => Math.random() * 20 + 10)
+                };
+            });
+        }
+
+        var dati = generaDati();
+        var annoCorrente = 0;
+        var intervallo;
+
+        function aggiornaGrafico(idx) {
+            var anno = anni[idx];
+            document.getElementById("anno-label").innerText = "Anno: " + anno;
+            
+            var aggiornamento = {
+                data: [
+                    {
+                        x: regioni,
+                        y: dati.map(d => d.licenza_media[idx]),
+                        type: 'bar',
+                        name: 'Licenza Media',
+                        marker: { color: 'blue' }
+                    },
+                    {
+                        x: regioni,
+                        y: dati.map(d => d.diploma[idx]),
+                        type: 'bar',
+                        name: 'Diploma',
+                        marker: { color: 'red' }
+                    },
+                    {
+                        x: regioni,
+                        y: dati.map(d => d.laurea[idx]),
+                        type: 'bar',
+                        name: 'Laurea',
+                        marker: { color: 'green' }
+                    }
+                ]
+            };
+            
+            Plotly.animate("grafico", aggiornamento, {
+                transition: {
+                    duration: 1000,
+                    easing: "linear"
+                },
+                frame: {
+                    duration: 1000,
+                    redraw: true
+                }
+            });
+        }
+
+        Plotly.newPlot("grafico", [
+            {
+                x: regioni,
+                y: dati.map(d => d.licenza_media[0]),
+                type: 'bar',
+                name: 'Licenza Media',
+                marker: { color: 'blue' }
+            },
+            {
+                x: regioni,
+                y: dati.map(d => d.diploma[0]),
+                type: 'bar',
+                name: 'Diploma',
+                marker: { color: 'red' }
+            },
+            {
+                x: regioni,
+                y: dati.map(d => d.laurea[0]),
+                type: 'bar',
+                name: 'Laurea',
+                marker: { color: 'green' }
+            }
+        ], {
+            title: "Affluenza al Voto per Regione e Titolo di Studio",
+            xaxis: { title: "Regione" },
+            yaxis: { title: "Affluenza (%)", range: [0, 100] },
+            barmode: 'stack'
+        });
+        
+        document.getElementById("play").addEventListener("click", function() {
+            clearInterval(intervallo);
+            intervallo = setInterval(() => {
+                if (annoCorrente < anni.length - 1) {
+                    annoCorrente++;
+                    aggiornaGrafico(annoCorrente);
+                } else {
+                    clearInterval(intervallo);
+                }
+            }, 1000);
+        });
+
+        document.getElementById("pause").addEventListener("click", function() {
+            clearInterval(intervallo);
+        });
+    </script>
+</body>
+</html>
+

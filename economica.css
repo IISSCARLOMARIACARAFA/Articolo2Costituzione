@@ -48,9 +48,7 @@ body{
 } 
 
 .carousel-control-next, .carousel-control-prev{
-  position:absolute;
-  width: 30% !important;
-  top: -10% !important;
+  opacity: 1 !important;
 }
 
 .carousel-caption{
@@ -155,7 +153,7 @@ p{
 .back-button{
   display: inline-block;
   padding: 10px 20px;
-  background-color: #6d4c41; /* Marrone elegante */
+  background-color: #D9883D; /* Marrone elegante */
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -164,7 +162,7 @@ p{
 }
 
 .back-button:hover {
-  background-color: #4e342e; /* Scuro al passaggio mouse */
+  background-color: #8e5016; /* Scuro al passaggio mouse */
   text-decoration: none;
 }
 
@@ -173,7 +171,7 @@ p{
 }
 
 .back-button:visited{
-  color: #ffd8d1;
+  color: #ffffff;
 }
 
 #navbar h1 {
@@ -291,7 +289,9 @@ iframe{
   }
 }
 
-
+.carousel-indicators [data-bs-target]{
+  background-color: Black !important;
+}
 
   
 
